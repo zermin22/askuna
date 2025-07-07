@@ -1,1 +1,217 @@
-# askuna
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Customer Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Color Palette */
+      --primary-blue: #4a90e2;
+      --secondary-blue: #7bc6ff;
+      --light-blue-bg-start: #A1C4FD;
+      --light-blue-bg-end: #C2E9FB;
+      --text-dark: #333;
+      --border-light: #ccc;
+      --success-color: seagreen;
+      --error-color: crimson;
+      --warning-color: orangered;
+      --white: white;
+
+      /* Spacing */
+      --spacing-xs: 8px;
+      --spacing-sm: 12px;
+      --spacing-md: 15px;
+      --spacing-lg: 20px;
+      --spacing-xl: 40px;
+
+      /* Borders & Shadows */
+      --border-radius-sm: 10px;
+      --border-radius-lg: 18px;
+      --shadow-light: 0 0 10px rgba(0,0,0,0.1);
+      --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.2);
+      --shadow-focus: 0 0 8px rgba(74, 144, 226, 0.3);
+
+      /* Font Sizes */
+      --font-size-sm: 14px;
+      --font-size-md: 15px;
+      --font-size-lg: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--light-blue-bg-start), var(--light-blue-bg-end));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh; /* Use min-height for better adaptability */
+      padding: var(--spacing-lg); /* Add some padding for smaller screens */
+      box-sizing: border-box; /* Include padding in element's total width and height */
+    }
+
+    .form-box {
+      background: var(--white);
+      padding: var(--spacing-xl) var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-medium);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .form-box__icon {
+      width: 90px;
+      margin-bottom: var(--spacing-md);
+      border-radius: 50%;
+      box-shadow: var(--shadow-light);
+    }
+
+    .form-box__title {
+      margin-bottom: var(--spacing-lg);
+      color: var(--text-dark);
+    }
+
+    .form-group {
+      margin-bottom: var(--spacing-sm); /* Add spacing between input groups */
+      text-align: left; /* Align labels to the left */
+    }
+
+    .form-group label {
+        display: block; /* Make label take its own line */
+        margin-bottom: var(--spacing-xs);
+        font-weight: 500;
+        color: var(--text-dark);
+        font-size: var(--font-size-sm);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: var(--spacing-sm);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--border-radius-sm);
+      font-size: var(--font-size-md);
+      transition: 0.3s ease;
+      outline: none;
+      box-sizing: border-box; /* Include padding and border in width */
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-blue);
+      box-shadow: var(--shadow-focus);
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: var(--spacing-sm);
+      background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+      color: var(--white);
+      border: none;
+      border-radius: var(--border-radius-sm);
+      font-size: var(--font-size-lg);
+      font-weight: bold;
+      margin-top: var(--spacing-md);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .submit-button:hover {
+      background: linear-gradient(90deg, #357abd, #5fb4ff); /* Slightly darker gradient on hover */
+    }
+
+    .message {
+      margin-top: var(--spacing-md);
+      font-weight: bold;
+      font-size: var(--font-size-sm);
+      min-height: 20px; /* Reserve space to prevent layout shift */
+    }
+
+    /* Message specific colors */
+    .message.error {
+      color: var(--error-color);
+    }
+
+    .message.warning {
+      color: var(--warning-color);
+    }
+
+    .message.success {
+      color: var(--success-color);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" alt="Customer Icon" class="form-box__icon">
+    <h2 class="form-box__title">Customer Registration</h2>
+
+    <form id="customerForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="👤 Full name" autocomplete="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="📧 example@domain.com" autocomplete="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number (10 digits)</label>
+        <input type="tel" id="phone" placeholder="📱 0812345678" pattern="\d{10}" title="Phone number must be exactly 10 digits" required>
+      </div>
+
+      <button type="submit" class="submit-button">🚀 Submit</button>
+    </form>
+
+    <p id="message" class="message"></p>
+  </div>
+
+  <script>
+    document.getElementById('customerForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const nameInput = document.getElementById("name");
+      const emailInput = document.getElementById("email");
+      const phoneInput = document.getElementById("phone");
+      const messageElement = document.getElementById("message");
+
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+
+      // Reset message styling
+      messageElement.innerText = "";
+      messageElement.className = "message"; // Reset classes
+
+      if (!name || !email || !phone) {
+        messageElement.innerText = "❌ Please fill out all fields!";
+        messageElement.classList.add("error");
+        // Optionally, highlight the first empty field
+        if (!name) nameInput.focus();
+        else if (!email) emailInput.focus();
+        else phoneInput.focus();
+      } else if (!/^\d{10}$/.test(phone)) {
+        messageElement.innerText = "❌ Phone number must be exactly 10 digits.";
+        messageElement.classList.add("warning");
+        phoneInput.focus(); // Focus on the phone number field
+      } else {
+        messageElement.innerText = "✅ Success! Data submitted.";
+        messageElement.classList.add("success");
+        console.log("📦 Customer Data:", { name, email, phone });
+
+        // Optionally, clear the form after successful submission
+        // this.reset(); // 'this' refers to the form element
+
+    }
+  });
+  </script>
+</body>
+</html>
